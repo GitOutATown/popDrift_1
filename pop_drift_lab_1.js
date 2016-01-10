@@ -1,4 +1,4 @@
-<!-- ------------------------- -->
+<!-- ---- Entities --------------------- -->
 
 var Marble = function() {};
 
@@ -31,13 +31,13 @@ var whitePop = new Array(500);
 blackPop.fill(new Black());
 whitePop.fill(new White());
 
-var combined = blackPop.concat(whitePop);
+var combinedPop = blackPop.concat(whitePop);
 
-var newSample = _.sample(combined, 100);
+//var newSample = _.sample(combinedPop, 100);
 
-var blkWhtRatio = ratio(newSample);
+//var blkWhtRatio = ratio(newSample);
 
-console.log(blkWhtRatio);
+//console.log(blkWhtRatio);
 
 
 
