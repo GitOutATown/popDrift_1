@@ -32,6 +32,7 @@ function newOffspring(marble) {
 }
 
 function increaseByTwo(marbles) {
+    console.log("increaseByTwo, marbles.length: " + marbles.length);
     var spawn = new Array(marbles.length * 2);
     for(var i = 0; i < marbles.length; i++) {
         spawn[i] = newOffspring(marbles[i]);
@@ -46,8 +47,15 @@ function replicate(marbles, maxPopSize) {
     while(newPop.length < maxPopSize / 2) {
         newPop = increaseByTwo(newPop);
     }
-    var sampleSize = (maxPopSize.length - newPop.length) / 2;
-    var remainder = increaseByTwo(_.sample(newPop, sampleSize));
+    var sampleSize = (maxPopSize - newPop.length) / 2;
+    var remainderSample = _.sample(newPop, sampleSize);
+    console.log("remainderSample.length: " + remainderSample.length);
+    var remainder = increaseByTwo(remainderSample);
+
+    console.log("replicate, after while, newPop.length: " + newPop.length);
+    console.log("replicate, after while, sampleSize: " + sampleSize);
+    console.log("replicate, after while, remainder.length: " + remainder.length);
+
     return newPop.concat(remainder);
 }
 
@@ -65,15 +73,16 @@ var combinedPop = blackPop.concat(whitePop);
 console.log(combinedPop.length);
 
 var newSample = _.sample(combinedPop, 100);
+console.log("newSample.length: " + newSample.length)
 
-var blkWhtRatio = ratio(newSample);
+var initialSampleRatio = ratio(newSample);
 
-console.log(blkWhtRatio);
+console.log('initialSampleRatio: ' + initialSampleRatio);
 
 var newMaxPop = replicate(newSample, maxPopSize);
 
 console.log(newMaxPop.length);
-console.log(ratio(newMaxPop));
+console.log('newMaxPop ratio: ' + ratio(newMaxPop));
 
 
 
