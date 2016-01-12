@@ -4,22 +4,22 @@
 
 var Marble = function() {};
 
-var Black = function() {
+var Green = function() {
     Marble.call(this);
 };
-Black.prototype = Object.create(Marble.prototype);
-Black.prototype.constructor = Black;
+Green.prototype = Object.create(Marble.prototype);
+Green.prototype.constructor = Green;
 
-var White = function() {
+var Orange = function() {
     Marble.call(this);
 };
-White.prototype = Object.create(Marble.prototype);
-White.prototype.constructor = White;
+Orange.prototype = Object.create(Marble.prototype);
+Orange.prototype.constructor = Orange;
 
 <!-- ---- functions --------------------- -->
 
 function ratio(marbles) {
-    var blacks = marbles.filter( function(m) {return m instanceof Black} );
+    var blacks = marbles.filter( function(m) {return m instanceof Green} );
     var ratioBlk = blacks.length / marbles.length;
     var ratioWht = 1 - ratioBlk;
     var rat = [round(ratioBlk), round(ratioWht)];
@@ -34,8 +34,8 @@ function popConvergence(ratio) {
 <!-- organic behavior. This will be important later when mutation is introduced. -->
 
 function spawnSingle(marble) {
-    if(marble instanceof Black) return new Black();
-    else return new White();
+    if(marble instanceof Green) return new Green();
+    else return new Orange();
 }
 
 function spawnTwins(marbles) {
@@ -92,15 +92,19 @@ var maxCycles = 1000;
 var blackPop = new Array(Math.floor(maxPopSize / 2));
 var whitePop = new Array(maxPopSize - blackPop.length);
 
-blackPop.fill(new Black());
-whitePop.fill(new White());
+blackPop.fill(new Green());
+whitePop.fill(new Orange());
 
 var initialCombinedPop = blackPop.concat(whitePop);
 console.log("initialCombinedPop.length: " + initialCombinedPop.length);
 
 <!-- ---- Cycle until convergence --------------- -->
 
-var cycles = cycleReplication(initialCombinedPop, sampleSize, maxPopSize, maxCycles);
+function run() {
+    return cycleReplication(initialCombinedPop, sampleSize, maxPopSize, maxCycles);
+}
+
+var cycles = run();
 
 console.log("====> cycles: " + JSON.stringify(cycles));
 
