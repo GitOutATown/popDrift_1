@@ -1,18 +1,18 @@
 <!DOCTYPE <!DOCTYPE html>
-<html>
 <head>
     <title>pop_drift_lab_2</title>
     <script src="d3.min.js"></script>
     <script src="underscore-min.js"></script>
-    <script src="pop_drift_lab_7.js"></script>
 </head>
+
 <body>
-    <script>
+
+<script src="pop_drift_lab_7.js"></script>
+
+<script>
         var data = run();
 
         d3.select("body").selectAll("p")
         .data(data).enter()
         .append("p").text(function(d) { return "" + d[0] + ", " + d[1]; });
-    </script>
-</body>
-</html>
+</script>

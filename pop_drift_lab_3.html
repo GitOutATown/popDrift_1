@@ -1,0 +1,84 @@
+<!DOCTYPE <!DOCTYPE html>
+<head>
+    <title>pop_drift_lab_3</title>
+    <script src="d3.min.js"></script>
+    <script src="underscore-min.js"></script>
+</head>
+
+<body>
+
+<script src="pop_drift_lab_8x.js"></script>
+
+<script>
+    var data = run();
+    console.log("--> data.length: " + data.length);
+
+    var color = d3.scale.ordinal()
+    .range(["#98abc5", "#8a89a6"]);
+
+    color.domain(d3.keys(data[0]).filter(function(key) { return key !== "State"; }));
+
+    data.forEach(function(d) {
+        console.log("--> d: " + d);
+        var y0 = 0;
+        d.ages = color.domain().map(function(name) { return {name: name, y0: y0, y1: y0 += +d[name]}; });
+        d.ages.forEach(function(d) { d.y0 /= y0; d.y1 /= y0; });
+    });
+
+    var margin = {top: 20, right: 20, bottom: 30, left: 40},
+        width = 1200 - margin.left - margin.right,
+        height = 500 - margin.top - margin.bottom;
+
+    var x = d3.scale.ordinal()
+    .rangeRoundBands([0, width], .1);
+
+    var y = d3.scale.linear()
+        .rangeRound([height, 0]);
+
+    var color = d3.scale.ordinal()
+        .range(["#98abc5", "#ff8c00"]);
+
+    var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("bottom");
+
+    var yAxis = d3.svg.axis()
+        .scale(y)
+        .orient("left")
+        .tickFormat(d3.format(".2s"));
+
+    var svg = d3.select("body").append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    x.domain(data.map(function(d) { return d[0]; }));
+    y.domain([0, d3.max(data, function(d) { return 1; })]);
+
+    svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis);
+
+    svg.append("g")
+        .attr("class", "y axis")
+        .call(yAxis)
+
+    var cycle = svg.selectAll(".cycle")
+        .data(data)
+        .enter().append("g")
+        .attr("class", "g")
+        .attr("transform", function(d) { return "translate(" + x(d[0]) + ",0)"; });
+
+    cycle.selectAll("rect")
+        .data(function(d) { return d.ages; })
+        .enter().append("rect")
+        .attr("width", x.rangeBand())
+        .attr("y", function(d) { return y(d.y1); })
+        .attr("height", function(d) { return y(d.y0) - y(d.y1); })
+        .style("fill", function(d) { return color(d.name); });
+
+</script>
+
+
